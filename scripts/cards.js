@@ -22,5 +22,13 @@ const initialCards = [
     {
       name: "Байкал",
       link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
+    },
+    {
+      name: "Ямало-Ненецкий АО",
+      link: "./images/yamal.jpg",
+    },
+    {
+      name: "Республика Татарстан",
+      link: "./images/kazan.jpg",
     }
 ];
