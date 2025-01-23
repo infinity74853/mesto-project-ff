@@ -12,7 +12,7 @@ function createCard(cardData, deleteCard) {
 
   // • установление значения вложенных элементов
   cardElement.querySelector('.card__image').src = cardData.link;
-  cardElement.setAttribute('alt', textContent = cardData.name);
+  cardElement.setAttribute('alt', cardData.name);
   cardElement.querySelector('.card__title').textContent = cardData.name;
 
   // • добавление к иконке удаления обработчика клика
