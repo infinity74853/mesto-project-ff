@@ -1,4 +1,4 @@
-const initialCards = [
+export const initialCards = [
     {
       name: "Архыз",
       link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
@@ -13,7 +13,7 @@ const initialCards = [
     },
     {
       name: "Ямало-Ненецкий АО",
-      link: "./images/yamal.jpg",
+      link: './images/yamal.jpg',
     },
     {
       name: "Тюмень",

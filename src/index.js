@@ -1,3 +1,7 @@
+import './pages/index.css';
+import { initialCards } from './scripts/cards.js';
+import { openModal } from './components/modal.js';
+
 // @todo: Темплейт карточки
 const cardTemplate = document.querySelector('#card-template').content;
 
@@ -23,8 +27,8 @@ function createCard(cardData, deleteCard) {
 }
 
 // @todo: Функция удаления карточки
-function deleteCard (event) {
-  const cardEvent = event.target.parentElement;
+function deleteCard (evt) {
+  const cardEvent = evt.target.parentElement;
   cardEvent.remove();
 }
 
