@@ -1,15 +1,32 @@
 import './pages/index.css';
-import { initialCards } from './scripts/cards.js';
-import { openModal } from './components/modal.js';
+import { initialCards} from './scripts/cards.js';
+import { deleteCard, cardTemplate, likeCard } from './components/card.js';
+import { openModal, addListener } from './components/modal.js';
 
-// @todo: Темплейт карточки
-const cardTemplate = document.querySelector('#card-template').content;
+// окно редактирование профиля
+const profileEditBtn = document.querySelector('.profile__edit-button');
+const popupEditProfile = document.querySelector('.popup_type_edit');
+profileEditBtn.addEventListener("click", () => openModal(popupEditProfile));
+addListener(popupEditProfile);
+
+// окно добавление карточки
+const addCardBtn = document.querySelector('.profile__add-button');
+const popupAddCard = document.querySelector('.popup_type_new-card');
+addCardBtn.addEventListener("click", () => openModal(popupAddCard));
+addListener(popupAddCard);
+
+// окно превью фотографии
+const popupImage = document.querySelector('.card__image');
+const popupOpenImage = document.querySelector('.popup_type_image');
+popupOpenImage.addEventListener("click", () => openModal(popupOpenImage));
+addListener(popupOpenImage);
 
 // @todo: DOM узлы
 const placesList = document.querySelector('.places__list');
 
+
 // @todo: Функция создания карточки
-function createCard(cardData, deleteCard) {
+function createCard(cardData, deleteCard, likeCard) {
 
   // • клонирование шаблона
   const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
@@ -22,18 +39,16 @@ function createCard(cardData, deleteCard) {
   // • добавление к иконке удаления обработчика клика
   const сardDeleteButton = cardElement.querySelector('.card__delete-button');
   сardDeleteButton.addEventListener('click', deleteCard);
-   
-  return cardElement;
-}
+  
+  // • добавление к иконке лайка обработчика клика
+  const сardLikeButton = cardElement.querySelector('.card__like-button');
+  сardLikeButton.addEventListener('click', likeCard);
 
-// @todo: Функция удаления карточки
-function deleteCard (evt) {
-  const cardEvent = evt.target.parentElement;
-  cardEvent.remove();
+  return cardElement;
 }
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach((cardList) => {
-  const cardToPage = createCard(cardList, deleteCard);
+  const cardToPage = createCard(cardList, deleteCard, likeCard);
   placesList.append(cardToPage);
 });

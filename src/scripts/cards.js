@@ -1,3 +1,7 @@
+import yamal from '../images/yamal.jpg';
+import tumen from '../images/tumen.jpg';
+import kazan from '../images/kazan.jpg';
+
 export const initialCards = [
     {
       name: "Архыз",
@@ -13,14 +17,14 @@ export const initialCards = [
     },
     {
       name: "Ямало-Ненецкий АО",
-      link: './images/yamal.jpg',
+      link: yamal,
     },
     {
       name: "Тюмень",
-      link: "./images/tumen.jpg",
+      link: tumen,
     },
     {
       name: "Республика Татарстан",
-      link: "./images/kazan.jpg",
+      link: kazan,
     }
 ];
