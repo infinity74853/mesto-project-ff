@@ -1,7 +1,7 @@
 import './pages/index.css';
 import { initialCards} from './scripts/cards.js';
 import { deleteCard, cardTemplate, likeCard } from './components/card.js';
-import { openModal, addListener } from './components/modal.js';
+import { openModal, closeModal, addListener } from './components/modal.js';
 
 // окно редактирование профиля
 const profileEditBtn = document.querySelector('.profile__edit-button');
@@ -16,17 +16,17 @@ addCardBtn.addEventListener("click", () => openModal(popupAddCard));
 addListener(popupAddCard);
 
 // окно превью фотографии
-const popupImage = document.querySelector('.card__image');
-const popupOpenImage = document.querySelector('.popup_type_image');
-popupOpenImage.addEventListener("click", () => openModal(popupOpenImage));
-addListener(popupOpenImage);
+const cardImageButton = document.querySelector('.card__image');
+const popupTypeImage = document.querySelector('.popup_type_image');
+//cardImageButton.addEventListener('click', openImageModal);
+
 
 // @todo: DOM узлы
 const placesList = document.querySelector('.places__list');
 
 
 // @todo: Функция создания карточки
-function createCard(cardData, deleteCard, likeCard) {
+function createCard(cardData, deleteCard, likeCard, openImageModal) {
 
   // • клонирование шаблона
   const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
@@ -43,7 +43,10 @@ function createCard(cardData, deleteCard, likeCard) {
   // • добавление к иконке лайка обработчика клика
   const сardLikeButton = cardElement.querySelector('.card__like-button');
   сardLikeButton.addEventListener('click', likeCard);
-
+  
+  // • добавление обработчика клика на превью
+  
+  
   return cardElement;
 }
 
