@@ -15,6 +15,10 @@ const popupAddCard = document.querySelector('.popup_type_new-card');
 addCardBtn.addEventListener("click", () => openModal(popupAddCard));
 addListener(popupAddCard);
 
+// окно закрытия 
+const imagePopup = document.querySelector('.popup_type_image');
+addListener(imagePopup);
+
 // @todo: DOM узлы
 const placesList = document.querySelector('.places__list');
 
@@ -24,7 +28,6 @@ initialCards.forEach((cardList) => {
   placesList.append(cardToPage);
 });
 
-/////////////////////////////////////////////////////////////////////////////
 //обработчик события submit профиля
 const formElement = document.querySelector('.popup__form');
 
@@ -51,75 +54,27 @@ formElement.addEventListener('submit', handleFormSubmit);
 
 ///////////////////////////////////////////////////////////////////////////// 
 // обработчик события submit новойкарты
+const newCardForm = document.querySelector('.popup_type_new-card .popup__form');
+const cardNameInput = newCardForm.querySelector('.popup__input_type_card-name');
+const cardUrlInput = newCardForm.querySelector('.popup__input_type_url');
+
+newCardForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  const cardData = {
+    name: cardNameInput.value,
+    link: cardUrlInput.value,
+  };
+
+  const cardElement = createCard(cardData, deleteCard, likeCard, openImageModal);
+  placesList.prepend(cardElement);
+
+  newCardForm.reset();
+  closeModal(newCardForm.closest('.popup'));
+});
 
 
-
-
-
-
-
-
-// const newCardForm = document.querySelector('.popup__form');
-// // Поля формы карточки
-// const cardNameInput = newCardForm.querySelector('.popup__input_type_card-name');
-// const cardUrlInput = newCardForm.querySelector('.popup__input_type_url');
-// // Контейнер для карточек
-// const cardsContainer = document.querySelector('.places__list');
-
-// // Обработчик отправки формы карточки
-// function eNewCardSubmit(evt) {
-//     evt.preventDefault();
-
-//     // Собираем данные из полей
-//     const cardData = {
-//         name: cardNameInput.value, 
-//         link: cardUrlInput.value
-//     };
-
-//         const cardElement = createCard(
-//         cardData, 
-//         deleteCard,      // функция удаления карточки
-//         likeCard,       // функция лайка
-//         openImageModal   // функция открытия изображения
-//     );
-
-//     // Добавляем карточку в DOM
-//     cardsContainer.prepend(cardElement);
-
-//     // Очищаем форму и закрываем попап
-//     newCardForm.reset();
-//     closeModal(newCardForm.closest('.popup'));
-// }
-
-// // Вешаем обработчик только на форму добавления карточки
-// newCardForm.addEventListener('submit', /*eNewCardSubmit*/);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const formCardElement = document.querySelector('.popup__form');
-// const cardNameInput = formElement.querySelector('.popup__input_type_card-name');
-// const cardUrlInput = formElement.querySelector('.popup__input_type_url');
-
-// // Контейнер для карточек (должен существовать в HTML)
-// const cardsContainer = document.querySelector('.places__list');
-
-// function handleCardSubmit(evt) {
-//   evt.preventDefault();
-
-//   // Собираем данные из формы
+//////////////////////
 //   const cardUrlValue = cardUrlInput.value;
 //   const cardNameValue = cardNameInput.value;
   
@@ -128,23 +83,5 @@ formElement.addEventListener('submit', handleFormSubmit);
   
 //   cardImage.textContent = cardUrlValue;
 //   cardTitle.textContent = cardNameValue;
-
-//   // Создаём новую карточку (предполагается, что функция createCard уже реализована)
-//   const newCard = createCard(
-//       cardData, 
-//       deleteCard,    // функция удаления карточки
-//       likeCard,     // функция лайка
-//       openImageModal // функция открытия изображения
-//   );
-
-//   // Добавляем карточку в начало списка
-//   cardsContainer.prepend(newCard);
-
-//   // Очищаем форму и закрываем попап
-//   formElement.reset();
-//   closeModal(formElement.closest('.popup'));
-// }
-
-
 
 // ///////////////////

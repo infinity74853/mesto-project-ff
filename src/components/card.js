@@ -1,3 +1,5 @@
+import { openModal } from './modal.js';
+
 // @todo: Функция создания карточки
 export function createCard(cardData, deleteCard, likeCard, openImageModal) {
   // • клонирование шаблона
@@ -7,7 +9,7 @@ export function createCard(cardData, deleteCard, likeCard, openImageModal) {
   cardElement.querySelector('.card__image').src = cardData.link;
   cardElement.querySelector('.card__image').alt = cardData.name;
   cardElement.querySelector('.card__title').textContent = cardData.name;
-
+  
   // • добавление к иконке удаления обработчика клика
   const сardDeleteButton = cardElement.querySelector('.card__delete-button');
   сardDeleteButton.addEventListener('click', deleteCard);
@@ -16,11 +18,10 @@ export function createCard(cardData, deleteCard, likeCard, openImageModal) {
   const сardLikeButton = cardElement.querySelector('.card__like-button');
   сardLikeButton.addEventListener('click', likeCard);
   
-  // • добавление на картинку обработчика клика для imageModal
+  // • окно попапа изображенияl
   const cardImageBtn = cardElement.querySelector('.card__image');
-  const popupTypeImage = cardElement.querySelector('.popup_type_image');
-  cardImageBtn.addEventListener('click', () => openImageModal(popupTypeImage));
-  
+  cardImageBtn.addEventListener('click', () => openImageModal(cardData));
+    
   return cardElement;
 }
 
@@ -39,11 +40,19 @@ export function likeCard (evt) {
   cardEvent.toggle('card__like-button_is-active');
 };
 
-// функция открытия imageModal
+// Функция открытия модалки с изображением
 export const openImageModal = (cardData) => {
-  const imageModal = document.querySelector('.popup__image');
-  const captionModal = document.querySelector('.popup__caption');
-  imageModal.src = cardData.link;
-  imageModal.alt = cardData.name;
-  captionModal.textContent = imageModal.alt;
-}
+  
+  const imagePopup = document.querySelector('.popup_type_image');
+  const imageElement = imagePopup.querySelector('.popup__image');
+  const captionElement = imagePopup.querySelector('.popup__caption');
+  
+
+  // Заполняем данные
+  imageElement.src = cardData.link;
+  imageElement.alt = cardData.name;
+  captionElement.textContent = cardData.name;
+
+  // Открываем попап
+  openModal(imagePopup);
+};
