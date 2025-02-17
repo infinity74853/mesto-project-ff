@@ -1,6 +1,5 @@
 // @todo: Функция создания карточки
 export function createCard(cardData, deleteCard, likeCard, openImageModal) {
-
   // • клонирование шаблона
   const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
 
@@ -17,9 +16,10 @@ export function createCard(cardData, deleteCard, likeCard, openImageModal) {
   const сardLikeButton = cardElement.querySelector('.card__like-button');
   сardLikeButton.addEventListener('click', likeCard);
   
-  // • функция открытия imageModal
+  // • добавление на картинку обработчика клика для imageModal
   const cardImageBtn = cardElement.querySelector('.card__image');
-  cardImageBtn.addEventListener('click', () => openImageModal(cardData));
+  const popupTypeImage = cardElement.querySelector('.popup_type_image');
+  cardImageBtn.addEventListener('click', () => openImageModal(popupTypeImage));
   
   return cardElement;
 }
@@ -40,12 +40,10 @@ export function likeCard (evt) {
 };
 
 // функция открытия imageModal
-export function openImageModal (cardData) {
-  const cardElement = document.querySelector('.card__image');
-  const popupTypeImage = document.querySelector('.popup_type-image');
-  cardElement.src = cardData.link;
-  cardElement.alt = cardData.name;
-  popupTypeImage.textContent = cardData.name;
-  
-};
-
+export const openImageModal = (cardData) => {
+  const imageModal = document.querySelector('.popup__image');
+  const captionModal = document.querySelector('.popup__caption');
+  imageModal.src = cardData.link;
+  imageModal.alt = cardData.name;
+  captionModal.textContent = imageModal.alt;
+}
