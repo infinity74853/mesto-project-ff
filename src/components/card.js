@@ -18,17 +18,17 @@ export function createCard(cardData, deleteCard, likeCard, openImageModal) {
   const сardLikeButton = cardElement.querySelector('.card__like-button');
   сardLikeButton.addEventListener('click', likeCard);
   
-  // • окно попапа изображенияl
+  // • добавление обработчика клика на картинку
   const cardImageBtn = cardElement.querySelector('.card__image');
   cardImageBtn.addEventListener('click', () => openImageModal(cardData));
     
   return cardElement;
 }
 
-// @todo: Темплейт карточки
+// @todo: темплейт карточки
 export const cardTemplate = document.querySelector('#card-template').content;
 
-// @todo: Функция удаления карточки
+// @todo: функция удаления карточки
 export function deleteCard (evt) {
   const cardEvent = evt.target.parentElement;
   cardEvent.remove();
@@ -40,19 +40,14 @@ export function likeCard (evt) {
   cardEvent.toggle('card__like-button_is-active');
 };
 
-// Функция открытия модалки с изображением
+// функция открытия попапа с картинкой
 export const openImageModal = (cardData) => {
-  
   const imagePopup = document.querySelector('.popup_type_image');
   const imageElement = imagePopup.querySelector('.popup__image');
   const captionElement = imagePopup.querySelector('.popup__caption');
-  
-
-  // Заполняем данные
   imageElement.src = cardData.link;
   imageElement.alt = cardData.name;
   captionElement.textContent = cardData.name;
 
-  // Открываем попап
   openModal(imagePopup);
 };

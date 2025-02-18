@@ -15,22 +15,21 @@ const popupAddCard = document.querySelector('.popup_type_new-card');
 addCardBtn.addEventListener("click", () => openModal(popupAddCard));
 addListener(popupAddCard);
 
-// окно закрытия 
+// закрытие попапа
 const imagePopup = document.querySelector('.popup_type_image');
 addListener(imagePopup);
 
 // @todo: DOM узлы
 const placesList = document.querySelector('.places__list');
 
-// @todo: Вывести карточки на страницу
+// @todo: вывести карточки на страницу
 initialCards.forEach((cardList) => {
   const cardToPage = createCard(cardList, deleteCard, likeCard, openImageModal);
   placesList.append(cardToPage);
 });
 
-//обработчик события submit профиля
+//обработчик события submit редактирования профиля
 const formElement = document.querySelector('.popup__form');
-
 const nameInput = formElement.querySelector('.popup__input_type_name');
 const jobInput = formElement.querySelector('.popup__input_type_description');
 
@@ -52,8 +51,7 @@ function handleFormSubmit(evt) {
 
 formElement.addEventListener('submit', handleFormSubmit);
 
-///////////////////////////////////////////////////////////////////////////// 
-// обработчик события submit новойкарты
+// обработчик события submit добавления карточки
 const newCardForm = document.querySelector('.popup_type_new-card .popup__form');
 const cardNameInput = newCardForm.querySelector('.popup__input_type_card-name');
 const cardUrlInput = newCardForm.querySelector('.popup__input_type_url');
@@ -72,16 +70,3 @@ newCardForm.addEventListener('submit', (evt) => {
   newCardForm.reset();
   closeModal(newCardForm.closest('.popup'));
 });
-
-
-//////////////////////
-//   const cardUrlValue = cardUrlInput.value;
-//   const cardNameValue = cardNameInput.value;
-  
-//   const cardImage = document.querySelector('.card__image');
-//   const cardTitle = document.querySelector('.card__title');
-  
-//   cardImage.textContent = cardUrlValue;
-//   cardTitle.textContent = cardNameValue;
-
-// ///////////////////
