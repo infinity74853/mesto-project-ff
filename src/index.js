@@ -16,9 +16,9 @@ profileEditBtn.addEventListener("click", () => {
 addClosePopupListeners(popupEditProfile);
 
 //обработчик события submit редактирования профиля
-const formElement = popupEditProfile.querySelector('.popup_type_edit .popup__form');
-const nameInput = formElement.querySelector('.popup__input_type_name');
-const jobInput = formElement.querySelector('.popup__input_type_description');
+const editProfileForm = popupEditProfile.querySelector('.popup_type_edit .popup__form');
+const nameInput = editProfileForm.querySelector('.popup__input_type_name');
+const jobInput = editProfileForm.querySelector('.popup__input_type_description');
 
 const profileName = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
@@ -29,11 +29,11 @@ function handleFormSubmit(evt) {
   profileName.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
   
-  const popup = formElement.closest('.popup');
+  const popup = ditProfileForm.closest('.popup');
   popup.classList.remove('popup_is-opened');
 }
 
-formElement.addEventListener('submit', handleFormSubmit);
+editProfileForm.addEventListener('submit', handleFormSubmit);
 
 // окно добавление карточки
 const addCardBtn = document.querySelector('.profile__add-button');
