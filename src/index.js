@@ -1,7 +1,15 @@
 import './pages/index.css';
-import { initialCards} from './scripts/cards.js';
+import { initialCards } from './scripts/cards.js';
 import { createCard, deleteCard, likeCard } from './components/card.js';
 import { openModal, closeModal, addClosePopupListeners } from './components/modal.js';
+import { apiUserInfo } from './components/api.js';
+
+// Promise.all([apiUserInfo(), apiShowCards()])
+//   .then(([userData, cardsData]) => {
+//     apiUserInfo(userData);
+//     apiShowCards(cardsData);
+//   })
+// renderProfileinfo(data);
 
 // окно редактирование профиля
 const profileEditBtn = document.querySelector('.profile__edit-button');
@@ -85,8 +93,10 @@ function handleImageClick(cardData) {
 }
 
 // @todo: вывести карточки на страницу
-initialCards.forEach((cardList) => {
+apiUserInfo.forEach((cardList) => {
   const cardToPage = createCard(cardList, deleteCard, likeCard, handleImageClick);
 
   placesList.append(cardToPage);
 });
+
+clearValidation(profileForm, validationConfig); 
