@@ -1,4 +1,4 @@
-  информация пользователя
+  //информация пользователя
 export function apiUserInfo ({profileName, profileDescription, profileImage}) {
   const renderProfileinfo = (data) => {
     profileName.textContent = data.name;
