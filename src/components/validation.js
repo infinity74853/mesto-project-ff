@@ -40,6 +40,16 @@ const hasInvalidInput = (inputList) => {
   });
 };
 
+///////////////////////////////////////////////////////////////
+// Функция для управления состоянием кнопки
+const toggleButtonState = (inputList, buttonElement, config) => {
+  if (hasInvalidInput(inputList)) {
+    disableSubmitButton(buttonElement, config);
+  } else {
+    enableSubmitButton(buttonElement, config);
+  }
+};
+
 // Функция для отключения кнопки
 const disableSubmitButton = (buttonElement, config) => {
   if (buttonElement) {
@@ -53,15 +63,6 @@ const enableSubmitButton = (buttonElement, config) => {
   if (buttonElement) {
     buttonElement.classList.remove(config.inactiveButtonClass);
     buttonElement.disabled = false;
-  }
-};
-
-// Функция для управления состоянием кнопки
-const toggleButtonState = (inputList, buttonElement, config) => {
-  if (hasInvalidInput(inputList)) {
-    disableSubmitButton(buttonElement, config);
-  } else {
-    enableSubmitButton(buttonElement, config);
   }
 };
 
