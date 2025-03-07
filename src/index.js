@@ -3,7 +3,7 @@ import { initialCards } from './scripts/cards.js';
 import { createCard, deleteCard, likeCard } from './components/card.js';
 import { openModal, closeModal, addClosePopupListeners } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
-import { getUserInfo, getInitialCards } from './components/api.js';
+import { getUserInfo, getInitialCards, editProfile } from './components/api.js';
 
 // Конфигурация для валидации
 const validationConfig = {
@@ -45,7 +45,7 @@ editProfileForm.addEventListener('submit', (evt) => {
       closeModal(popupEditProfile);
     })
     .catch((err) => {
-      console.error("Ошибка при обновлении профиля:", err);
+      console.error('Ошибка при обновлении профиля:', err);
     });
 });
 
@@ -76,7 +76,7 @@ newCardForm.addEventListener("submit", (evt) => {
       closeModal(newCardForm.closest(".popup"));
     })
   .catch((err) => {
-    console.error(`Ошибка при добавлении карточки:`, err);
+    console.error('Ошибка при добавлении карточки:', err);
   });
 });
 
