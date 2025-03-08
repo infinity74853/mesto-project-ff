@@ -7,7 +7,7 @@ const config = {
   },
 };
 
-// проверка ответа сервера
+// Проверка ответа сервера
 const checkResponse = (res) => {
   if (res.ok) {
     return res.json();
@@ -15,23 +15,21 @@ const checkResponse = (res) => {
   return Promise.reject(`Ошибка: ${res.status}`);
 };
 
-// загрузка информации о пользователе
+// Загрузка информации о пользователе
 export const getUserInfo = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers,
-  })
-  .then(checkResponse);
+  }).then(checkResponse);
 };
 
-// загрузка карточек
+// Загрузка карточек
 export const getInitialCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers,
-  })
-  .then(checkResponse);
+  }).then(checkResponse);
 };
 
-// редактирование профиля
+// Редактирование профиля
 export const editProfile = (name, about) => {
   return fetch(`${config.baseUrl}/users/me`, {
     method: 'PATCH',
@@ -40,11 +38,10 @@ export const editProfile = (name, about) => {
       name,
       about,
     }),
-  })
-  .then(checkResponse);
+  }).then(checkResponse);
 };
 
-// добавление новой карточки
+// Добавление новой карточки
 export const addNewCard = (name, link) => {
   return fetch(`${config.baseUrl}/cards`, {
     method: 'POST',
@@ -53,34 +50,34 @@ export const addNewCard = (name, link) => {
       name,
       link,
     }),
-  })
-  .then(checkResponse);
+  }).then(checkResponse);
 };
 
-// удаление карточки
+// Удаление карточки
 export const deleteCard = (cardId) => {
   return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: 'DELETE',
     headers: config.headers,
-  })
-  .then(checkResponse);
+  }).then(checkResponse);
 };
 
-// лайк карточки
-export const likeCard = (cardId) => {
+// Постановка лайка
+export const apiLikeCard = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'PUT',
     headers: config.headers,
-  })
-  .then(checkResponse);
+  }).then(checkResponse);
 };
 
-// унлайк карточки
-export const unlikeCard = (cardId) => {
+// Снятие лайка
+export const apiUnlikeCard = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'DELETE',
     headers: config.headers,
   })
-  .then(checkResponse);
+    .then(checkResponse)
+    .then((data) => {
+      console.log('Ответ сервера после снятия лайка:', data); // Логируем ответ
+      return data;
+    });
 };
-
