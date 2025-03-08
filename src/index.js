@@ -3,7 +3,10 @@ import { initialCards } from './scripts/cards.js';
 import { createCard, deleteCard, likeCard } from './components/card.js';
 import { openModal, closeModal, addClosePopupListeners } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
-import { getUserInfo, getInitialCards, editProfile } from './components/api.js';
+import { getUserInfo, getInitialCards, editProfile, addNewCard,
+  deleteCard as apiDeleteCard, 
+  likeCard as apiLikeCard, 
+  unLikeCard as apiUnLikeCard } from './components/api.js';
 
 // Конфигурация для валидации
 const validationConfig = {
@@ -62,22 +65,20 @@ addCardBtn.addEventListener('click', () => {
 });
 
 // обработчик события submit добавления карточки
-newCardForm.addEventListener("submit", (evt) => {
+newCardForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  newCardForm.reset();
-  const cardData = {
-    name: cardNameInput.value,
-    link: cardUrlInput.value,
-  };
+  const cardName = newCardForm.querySelector('.popup__input_type_card-name').value;
+  const cardLink = newCardForm.querySelector('.popup__input_type_url').value;
+
   addNewCard(cardName, cardLink)
     .then((cardData) => {
       const cardElement = createCard(cardData, deleteCard, likeCard, handleImageClick);
       placesList.prepend(cardElement);
-      closeModal(newCardForm.closest(".popup"));
+      closeModal(popupAddCard);
     })
-  .catch((err) => {
-    console.error('Ошибка при добавлении карточки:', err);
-  });
+    .catch((err) => {
+      console.error('Ошибка при добавлении карточки:', err);
+    });
 });
 
 // загрузка данных пользователя и карточек
@@ -92,20 +93,8 @@ Promise.all([getUserInfo(), getInitialCards()])
     });
   })
   .catch((err) => {
-    console.error(`Ошибка при добавлении карточки:`, err)
-});
-
-// @todo: DOM узлы
-const cardNameInput = newCardForm.querySelector(".popup__input_type_card-name");
-const cardUrlInput = newCardForm.querySelector(".popup__input_type_url");
-const placesList = document.querySelector(".places__list");
-const popupImage = document.querySelector(".popup_type_image");
-const popup = editProfileForm.closest(".popup");
-popup.classList.remove("popup_is-opened");  //?
-
-addClosePopupListeners(popupEditProfile);
-addClosePopupListeners(popupAddCard);
-addClosePopupListeners(popupImage);
+    console.error('Ошибка при загрузке данных:', err);
+  });
 
 // функция открытия попапа с картинкой
 function handleImageClick(cardData) {
@@ -117,8 +106,20 @@ function handleImageClick(cardData) {
   openModal(popupImage);
 }
 
+// @todo: DOM узлы
+const placesList = document.querySelector(".places__list");
+const popupImage = document.querySelector(".popup_type_image");
+const popup = editProfileForm.closest(".popup");
+popup.classList.remove("popup_is-opened");  //?
+
+addClosePopupListeners(popupEditProfile);
+addClosePopupListeners(popupAddCard);
+addClosePopupListeners(popupImage);
+
 // @todo: вывести карточки на страницу
-initialCards.forEach((cardList) => {
-  const cardToPage = createCard(cardList, deleteCard, likeCard, handleImageClick);
-  placesList.append(cardToPage);
-});
+// initialCards.forEach((cardList) => {
+//   const cardToPage = createCard(cardList, deleteCard, likeCard, handleImageClick);
+//   placesList.append(cardToPage);
+// });
+// const cardNameInput = newCardForm.querySelector(".popup__input_type_card-name");
+// const cardUrlInput = newCardForm.querySelector(".popup__input_type_url");

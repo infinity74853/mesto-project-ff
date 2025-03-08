@@ -43,3 +43,44 @@ export const editProfile = (name, about) => {
   })
   .then(checkResponse);
 };
+
+// добавление новой карточки
+export const addNewCard = (name, link) => {
+  return fetch(`${config.baseUrl}/cards`, {
+    method: 'POST',
+    headers: config.headers,
+    body: JSON.stringify({
+      name,
+      link,
+    }),
+  })
+  .then(checkResponse);
+};
+
+// удаление карточки
+export const deleteCard = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
+    method: 'DELETE',
+    headers: config.headers,
+  })
+  .then(checkResponse);
+};
+
+// лайк карточки
+export const likeCard = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'PUT',
+    headers: config.headers,
+  })
+  .then(checkResponse);
+};
+
+// унлайк карточки
+export const unlikeCard = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'DELETE',
+    headers: config.headers,
+  })
+  .then(checkResponse);
+};
+
