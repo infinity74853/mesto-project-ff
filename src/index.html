@@ -14,7 +14,21 @@
   </header>
   <main class="content">
     <section class="profile page__section">
-      <img src="<%= require('./images/avatar.jpg') %>" alt="Аватар" class="profile__image">
+      <div class="profile__image-container">
+        <img src="<%= require('./images/avatar.jpg') %>" alt="Аватар" class="profile__image">
+        <div class="profile__image-edit"></div>
+      </div>
+      <div class="popup popup_is-animated popup_type_avatar">
+        <div class="popup__content">
+          <button type="button" class="popup__close"></button>
+          <h3 class="popup__title">Обновить avatar</h3>
+          <form class="popup__form" name="avatar-form">
+            <input type="url" name="avatar" id="avatar" class="popup__input popup__input_type_url" placeholder="Ссылка на аватар" required>
+            <span class="popup__error avatar-error"></span>
+            <button type="submit" class="button popup__button">Сохранить</button>
+          </form>
+        </div>
+      </div>
       <div class="profile__info">
         <h1 class="profile__title">Жак-Ив Кусто</h1>
         <button class="profile__edit-button" type="button"></button>

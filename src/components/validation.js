@@ -5,6 +5,7 @@ const showInputError = (formElement, inputElement, errorMessage, config) => {
     inputElement.classList.add(config.inputErrorClass);
     errorElement.textContent = errorMessage;
     errorElement.classList.add(config.errorClass);
+    inputElement.classList.add('popup__input_error');
   }
 };
 
@@ -15,6 +16,7 @@ const hideInputError = (formElement, inputElement, config) => {
     inputElement.classList.remove(config.inputErrorClass);
     errorElement.textContent = '';
     errorElement.classList.remove(config.errorClass);
+    inputElement.classList.remove('popup__input_error');
   }
 };
 

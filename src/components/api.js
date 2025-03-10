@@ -53,14 +53,6 @@ export const addNewCard = (name, link) => {
   }).then(checkResponse);
 };
 
-// Удаление карточки
-export const deleteCard = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/${cardId}`, {
-    method: 'DELETE',
-    headers: config.headers,
-  }).then(checkResponse);
-};
-
 // Постановка лайка
 export const apiLikeCard = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
@@ -80,4 +72,23 @@ export const apiUnlikeCard = (cardId) => {
       console.log('Ответ сервера после снятия лайка:', data); // Логируем ответ
       return data;
     });
+};
+
+// Удаление карточки
+export const apiDeleteCard = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
+    method: 'DELETE',
+    headers: config.headers,
+  }).then(checkResponse);
+};
+
+//запрос на обновление аватара
+export const updateAvatar = (avatarUrl) => {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: 'PATCH',
+    headers: config.headers,
+    body: JSON.stringify({
+      avatar: avatarUrl,
+    }),
+  }).then(checkResponse);
 };
