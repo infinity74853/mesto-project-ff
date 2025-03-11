@@ -1,11 +1,10 @@
 import './pages/index.css';
-//import { initialCards } from './scripts/cards.js';
 import { createCard, likeCard, unlikeCard, handleDeleteCard } from './components/card.js';
 import { openModal, closeModal, addClosePopupListeners } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
 import { getUserInfo, getInitialCards, editProfile, addNewCard, updateAvatar } from './components/api.js';
 
-// Конфигурация для валидации
+// конфигурация для валидации
 const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -15,7 +14,7 @@ const validationConfig = {
   errorClass: 'popup__error_visible',
 };
 
-// Включение валидации
+// включение валидации
 enableValidation(validationConfig);
 
 const avatarEditButton = document.querySelector('.profile__image-edit');
@@ -23,23 +22,23 @@ const popupAvatar = document.querySelector('.popup_type_avatar');
 const avatarForm = popupAvatar.querySelector('.popup__form');
 const avatarInput = avatarForm.querySelector('.popup__input_type_url');
 
-// Обработчик открытия попапа обновления аватара
+// обработчик открытия попапа обновления аватара
 avatarEditButton.addEventListener('click', () => {
   avatarForm.reset();
-  clearValidation(avatarForm, validationConfig); // Очистка ошибок
+  clearValidation(avatarForm, validationConfig);
   openModal(popupAvatar);
 });
 
-// Обработчик отправки формы обновления аватара
+// обработчик отправки формы обновления аватара
 avatarForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const submitButton = avatarForm.querySelector('.popup__button');
   const originalButtonText = submitButton.textContent;
-
   submitButton.textContent = 'Сохранение...';
 
   updateAvatar(avatarInput.value)
     .then((userData) => {
+      console.log('Аватар успешно обновлён:', userData);
       const avatarElement = document.querySelector('.profile__image');
       avatarElement.src = userData.avatar;
       closeModal(popupAvatar);
@@ -48,12 +47,11 @@ avatarForm.addEventListener('submit', (evt) => {
       console.error('Ошибка при обновлении аватара:', err);
     })
     .finally(() => {
-      // Возвращаем оригинальный текст кнопки
       submitButton.textContent = originalButtonText;
     });
 });
 
-// Окно редактирования профиля
+// окно редактирования профиля
 const profileEditBtn = document.querySelector('.profile__edit-button');
 const popupEditProfile = document.querySelector('.popup_type_edit');
 const editProfileForm = popupEditProfile.querySelector('.popup__form');
@@ -62,24 +60,24 @@ const jobInput = editProfileForm.querySelector('.popup__input_type_description')
 const profileName = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 
-// Обработчик открытия модального окна редактирования профиля
+// обработчик открытия модального окна редактирования профиля
 profileEditBtn.addEventListener('click', () => {
   nameInput.value = profileName.textContent;
   jobInput.value = profileDescription.textContent;
-  clearValidation(editProfileForm, validationConfig); // Очистка ошибок
+  clearValidation(editProfileForm, validationConfig);
   openModal(popupEditProfile);
 });
 
-// Обработчик отправки формы редактирования профиля
+// обработчик отправки формы редактирования профиля
 editProfileForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const submitButton = editProfileForm.querySelector('.popup__button');
   const originalButtonText = submitButton.textContent;
-
   submitButton.textContent = 'Сохранение...';
 
   editProfile(nameInput.value, jobInput.value)
     .then((userData) => {
+      console.log('Профиль успешно обновлён:', userData);
       profileName.textContent = userData.name;
       profileDescription.textContent = userData.about;
       closeModal(popupEditProfile);
@@ -92,24 +90,23 @@ editProfileForm.addEventListener('submit', (evt) => {
     });
 });
 
-// Окно добавления карточки
+// окно добавления карточки
 const addCardBtn = document.querySelector('.profile__add-button');
 const popupAddCard = document.querySelector('.popup_type_new-card');
 const newCardForm = popupAddCard.querySelector('.popup__form');
 
-// Обработчик открытия модального окна добавления карточки
+// обработчик открытия модального окна добавления карточки
 addCardBtn.addEventListener('click', () => {
   newCardForm.reset();
   clearValidation(newCardForm, validationConfig); // Очистка ошибок
   openModal(popupAddCard);
 });
 
-// Обработчик отправки формы добавления карточки
+// обработчик отправки формы добавления карточки
 newCardForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const submitButton = newCardForm.querySelector('.popup__button');
   const originalButtonText = submitButton.textContent;
-
   submitButton.textContent = 'Сохранение...';
 
   const cardName = newCardForm.querySelector('.popup__input_type_card-name').value;
@@ -129,13 +126,19 @@ newCardForm.addEventListener('submit', (evt) => {
     });
 });
 
-// Инициализация currentUserId
+// инициализация currentUserId
 let currentUserId = null;
 
-// Загрузка данных пользователя и карточек
+// загрузка данных пользователя и карточек
 Promise.all([getUserInfo(), getInitialCards()])
   .then(([userData, cardsData]) => {
     currentUserId = userData._id;
+    // обновляем данные профиля
+    profileName.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    const avatarElement = document.querySelector('.profile__image');
+    avatarElement.src = userData.avatar;
+    // отображаем карточки
     cardsData.forEach((card) => {
       const cardElement = createCard(
         card,
@@ -151,7 +154,7 @@ Promise.all([getUserInfo(), getInitialCards()])
     console.error('Ошибка при загрузке данных:', err);
   });
 
-// Функция открытия попапа с картинкой
+// функция открытия попапа с картинкой
 function handleImageClick(cardData) {
   const imageElement = popupImage.querySelector('.popup__image');
   const captionElement = popupImage.querySelector('.popup__caption');
@@ -171,4 +174,3 @@ addClosePopupListeners(popupEditProfile);
 addClosePopupListeners(popupAddCard);
 addClosePopupListeners(popupImage);
 addClosePopupListeners(popupAvatar);
-

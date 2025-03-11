@@ -7,29 +7,30 @@ const config = {
   },
 };
 
-// Проверка ответа сервера
+// проверка ответа сервера
 const checkResponse = (res) => {
   if (res.ok) {
     return res.json();
   }
+  // если ошибка, отклоняем промис
   return Promise.reject(`Ошибка: ${res.status}`);
 };
 
-// Загрузка информации о пользователе
+// загрузка информации о пользователе
 export const getUserInfo = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers,
   }).then(checkResponse);
 };
 
-// Загрузка карточек
+// загрузка карточек
 export const getInitialCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers,
   }).then(checkResponse);
 };
 
-// Редактирование профиля
+// редактирование профиля
 export const editProfile = (name, about) => {
   return fetch(`${config.baseUrl}/users/me`, {
     method: 'PATCH',
@@ -41,7 +42,7 @@ export const editProfile = (name, about) => {
   }).then(checkResponse);
 };
 
-// Добавление новой карточки
+// добавление новой карточки
 export const addNewCard = (name, link) => {
   return fetch(`${config.baseUrl}/cards`, {
     method: 'POST',
@@ -53,7 +54,7 @@ export const addNewCard = (name, link) => {
   }).then(checkResponse);
 };
 
-// Постановка лайка
+// постановка лайка
 export const apiLikeCard = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'PUT',
@@ -61,7 +62,7 @@ export const apiLikeCard = (cardId) => {
   }).then(checkResponse);
 };
 
-// Снятие лайка
+// снятие лайка
 export const apiUnlikeCard = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'DELETE',
@@ -69,12 +70,12 @@ export const apiUnlikeCard = (cardId) => {
   })
     .then(checkResponse)
     .then((data) => {
-      console.log('Ответ сервера после снятия лайка:', data); // Логируем ответ
+      console.log('Ответ сервера после снятия лайка:', data);
       return data;
     });
 };
 
-// Удаление карточки
+// удаление карточки
 export const apiDeleteCard = (cardId) => {
   return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: 'DELETE',
