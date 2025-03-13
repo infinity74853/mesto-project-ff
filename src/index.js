@@ -1,5 +1,5 @@
 import './pages/index.css';
-import { createCard, likeCard, unlikeCard, handleDeleteCard } from './components/card.js';
+import { createCard, likeCard, deleteCard } from './components/card.js';
 import { openModal, closeModal, addClosePopupListeners } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
 import { getUserInfo, getInitialCards, editProfile, addNewCard, updateAvatar } from './components/api.js';
@@ -32,7 +32,7 @@ avatarEditButton.addEventListener('click', () => {
 // обработчик отправки формы обновления аватара
 avatarForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  const submitButton = avatarForm.querySelector('.popup__button');
+  const submitButton = evt.submitter;
   const originalButtonText = submitButton.textContent;
   submitButton.textContent = 'Сохранение...';
 
@@ -114,7 +114,7 @@ newCardForm.addEventListener('submit', (evt) => {
 
   addNewCard(cardName, cardLink)
     .then((cardData) => {
-      const cardElement = createCard(cardData, handleDeleteCard, likeCard, handleImageClick, currentUserId);
+      const cardElement = createCard(cardData, deleteCard, likeCard, handleImageClick, currentUserId);
       placesList.prepend(cardElement);
       closeModal(popupAddCard);
     })
@@ -142,7 +142,7 @@ Promise.all([getUserInfo(), getInitialCards()])
     cardsData.forEach((card) => {
       const cardElement = createCard(
         card,
-        (cardId, cardElement) => handleDeleteCard(cardId, cardElement),
+        (cardId, cardElement) => deleteCard(cardId, cardElement),
         likeCard,
         handleImageClick,
         currentUserId

@@ -1,4 +1,4 @@
-import { apiLikeCard, apiUnlikeCard, apiDeleteCard } from './api.js';
+import { putLikeCard, putUnlikeCard, deleteCardFromServer } from './api.js';
 
 // функция создания карточки
 export function createCard(cardData, deleteCard, likeCard, handleImageClick, currentUserId) {
@@ -51,7 +51,7 @@ const cardTemplate = document.querySelector('#card-template').content;
 
 // функция для постановки лайка
 export const likeCard = (cardId, likeButton, likeCount) => {
-  apiLikeCard(cardId)
+  putLikeCard(cardId)
     .then((updatedCard) => {
       likeButton.classList.add('card__like-button_is-active'); // добавляем активное состояние кнопки
       likeCount.textContent = updatedCard.likes.length; // обновляем количество лайков
@@ -63,7 +63,7 @@ export const likeCard = (cardId, likeButton, likeCount) => {
 
 // функция для снятия лайка
 export const unlikeCard = (cardId, likeButton, likeCount) => {
-  apiUnlikeCard(cardId)
+  putUnlikeCard(cardId)
     .then((updatedCard) => {
       likeButton.classList.remove('card__like-button_is-active');
       likeCount.textContent = updatedCard.likes.length; // обновляем количество лайков
@@ -74,10 +74,10 @@ export const unlikeCard = (cardId, likeButton, likeCount) => {
 };
 
 // функция для удаления карточки
-export function handleDeleteCard(cardId, cardElement) {
+export function deleteCard(cardId, cardElement) {
   const confirmDelete = confirm('Вы уверены, что хотите удалить эту карточку?');
   if (confirmDelete) {
-    apiDeleteCard(cardId)
+    deleteCardFromServer(cardId)
       .then(() => {
         cardElement.remove(); // удаляем из DOM
       })
