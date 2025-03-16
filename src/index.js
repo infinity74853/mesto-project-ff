@@ -1,8 +1,8 @@
 import './pages/index.css';
-import { createCard, likeCard, deleteCard } from './components/card.js';
+import { createCard, likeCard } from './components/card.js';
 import { openModal, closeModal, addClosePopupListeners } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
-import { getUserInfo, getInitialCards, editProfile, addNewCard, updateAvatar } from './components/api.js';
+import { getUserInfo, getInitialCards, editProfile, addNewCard, updateAvatar, deleteCardFromServer } from './components/api.js';
 
 // конфигурация для валидации
 const validationConfig = {
@@ -21,6 +21,18 @@ const avatarEditButton = document.querySelector('.profile__image-edit');
 const popupAvatar = document.querySelector('.popup_type_avatar');
 const avatarForm = popupAvatar.querySelector('.popup__form');
 const avatarInput = avatarForm.querySelector('.popup__input_type_url');
+const popupDeleteCard = document.querySelector('.popup_type_delete-card');
+const spinner = document.querySelector('.spinner');
+
+//функция для показа спиннера
+const showSpinner = () => {
+  spinner.style.display = 'block';
+};
+
+//функция для скрытия спиннера
+const hideSpinner = () => {
+  spinner.style.display = 'none';
+};
 
 // обработчик открытия попапа обновления аватара
 avatarEditButton.addEventListener('click', () => {
@@ -35,6 +47,7 @@ avatarForm.addEventListener('submit', (evt) => {
   const submitButton = evt.submitter;
   const originalButtonText = submitButton.textContent;
   submitButton.textContent = 'Сохранение...';
+  showSpinner(); // Показываем спиннер перед запросом
 
   updateAvatar(avatarInput.value)
     .then((userData) => {
@@ -48,6 +61,7 @@ avatarForm.addEventListener('submit', (evt) => {
     })
     .finally(() => {
       submitButton.textContent = originalButtonText;
+      hideSpinner(); // Скрываем спиннер после завершения запроса
     });
 });
 
@@ -74,6 +88,7 @@ editProfileForm.addEventListener('submit', (evt) => {
   const submitButton = editProfileForm.querySelector('.popup__button');
   const originalButtonText = submitButton.textContent;
   submitButton.textContent = 'Сохранение...';
+  showSpinner(); // Показываем спиннер перед запросом
 
   editProfile(nameInput.value, jobInput.value)
     .then((userData) => {
@@ -87,6 +102,7 @@ editProfileForm.addEventListener('submit', (evt) => {
     })
     .finally(() => {
       submitButton.textContent = originalButtonText;
+      hideSpinner(); // Скрываем спиннер после завершения запроса
     });
 });
 
@@ -108,13 +124,14 @@ newCardForm.addEventListener('submit', (evt) => {
   const submitButton = newCardForm.querySelector('.popup__button');
   const originalButtonText = submitButton.textContent;
   submitButton.textContent = 'Сохранение...';
+  showSpinner(); // Показываем спиннер перед запросом
 
   const cardName = newCardForm.querySelector('.popup__input_type_card-name').value;
   const cardLink = newCardForm.querySelector('.popup__input_type_url').value;
 
   addNewCard(cardName, cardLink)
     .then((cardData) => {
-      const cardElement = createCard(cardData, deleteCard, likeCard, handleImageClick, currentUserId);
+      const cardElement = createCard(cardData, confirmDeleteCard, likeCard, handleImageClick, currentUserId);
       placesList.prepend(cardElement);
       closeModal(popupAddCard);
     })
@@ -123,8 +140,39 @@ newCardForm.addEventListener('submit', (evt) => {
     })
     .finally(() => {
       submitButton.textContent = originalButtonText;
+      hideSpinner(); // Скрываем спиннер после завершения запроса
     });
 });
+
+// функция для подтверждения удаления карточки
+const confirmDeleteCard = (cardId, cardElement) => {
+  const popupDeleteCard = document.querySelector('.popup_type_delete-card');
+  const deleteForm = popupDeleteCard.querySelector('.popup__form');
+
+  // Обработчик отправки формы удаления
+  const handleDeleteSubmit = (evt) => {
+    evt.preventDefault();
+    showSpinner(); // Показываем спиннер перед запросом
+    deleteCardFromServer(cardId)
+      .then(() => {
+        cardElement.remove(); // Удаляем карточку из DOM
+        closeModal(popupDeleteCard); // Закрываем попап
+      })
+      .catch((err) => {
+        console.error('Ошибка при удалении карточки:', err);
+      })
+      .finally(() => {
+        hideSpinner(); // Скрываем спиннер после завершения запроса
+        deleteForm.removeEventListener('submit', handleDeleteSubmit); // Удаляем обработчик
+      });
+  };
+
+  // Добавляем обработчик отправки формы
+  deleteForm.addEventListener('submit', handleDeleteSubmit);
+
+  // Открываем попап
+  openModal(popupDeleteCard);
+};
 
 // инициализация currentUserId
 let currentUserId = null;
@@ -142,9 +190,9 @@ Promise.all([getUserInfo(), getInitialCards()])
     cardsData.forEach((card) => {
       const cardElement = createCard(
         card,
-        (cardId, cardElement) => deleteCard(cardId, cardElement),
+        (cardId, cardElement) => confirmDeleteCard(cardId, cardElement),
         likeCard,
-        handleImageClick,
+        handleImageClick,        
         currentUserId
       );
       placesList.append(cardElement);
@@ -152,7 +200,12 @@ Promise.all([getUserInfo(), getInitialCards()])
   })
   .catch((err) => {
     console.error('Ошибка при загрузке данных:', err);
+  })
+  .finally(() => {
+    hideSpinner(); // Скрываем спиннер после завершения загрузки
   });
+
+showSpinner(); // Показываем спиннер перед началом загрузки
 
 // функция открытия попапа с картинкой
 function handleImageClick(cardData) {
@@ -174,3 +227,4 @@ addClosePopupListeners(popupEditProfile);
 addClosePopupListeners(popupAddCard);
 addClosePopupListeners(popupImage);
 addClosePopupListeners(popupAvatar);
+addClosePopupListeners(popupDeleteCard);

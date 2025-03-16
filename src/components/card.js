@@ -1,7 +1,7 @@
 import { putLikeCard, putUnlikeCard, deleteCardFromServer } from './api.js';
 
 // функция создания карточки
-export function createCard(cardData, deleteCard, likeCard, handleImageClick, currentUserId) {
+export function createCard(cardData, confirmDeleteCard, likeCard, handleImageClick, currentUserId) {
   const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
   const cardImage = cardElement.querySelector('.card__image');
   
@@ -14,7 +14,7 @@ export function createCard(cardData, deleteCard, likeCard, handleImageClick, cur
   const cardDeleteButton = cardElement.querySelector('.card__delete-button');
   if (cardData.owner && cardData.owner._id === currentUserId) {
     cardDeleteButton.style.display = 'block'; // показываем иконку удаления
-    cardDeleteButton.addEventListener('click', () => deleteCard(cardData._id, cardElement));
+    cardDeleteButton.addEventListener('click', () => confirmDeleteCard(cardData._id, cardElement));
   } else {
     cardDeleteButton.style.display = 'none'; // скрываем иконку удаления
   }
@@ -71,18 +71,4 @@ export const unlikeCard = (cardId, likeButton, likeCount) => {
     .catch((err) => {
       console.error('Ошибка при снятии лайка:', err);
     });
-};
-
-// функция для удаления карточки
-export function deleteCard(cardId, cardElement) {
-  const confirmDelete = confirm('Вы уверены, что хотите удалить эту карточку?');
-  if (confirmDelete) {
-    deleteCardFromServer(cardId)
-      .then(() => {
-        cardElement.remove(); // удаляем из DOM
-      })
-      .catch((err) => {
-        console.error('Ошибка при удалении карточки:', err);
-      });
-  }
 };
